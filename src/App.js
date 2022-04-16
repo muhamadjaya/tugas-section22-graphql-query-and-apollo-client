@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import Todo from "components/Todo/Todo";
-import LoadingSvg from "components/LoadingSvg/LoadingSvg";
+import Todo from "./components/Todo/Todo";
+import LoadingSvg from "./components/LoadingSvg/LoadingSvg";
 import { useQuery, useLazyQuery } from "@apollo/client";
-import { GET_TODOLIST, GET_TODOLIST_BY_ID } from "graphql/Queries/TodoList";
+import { GET_TODOLIST, GET_TODOLIST_BY_ID } from "./graphql/Queries/TodoList";
 
 const TodoList = () => {
   const { data, loading } = useQuery(GET_TODOLIST);
