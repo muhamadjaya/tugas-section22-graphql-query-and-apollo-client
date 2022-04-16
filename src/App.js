@@ -1,40 +1,26 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import Todo from "components/Todo";
-import { gql, useQuery, useLazyQuery } from "@apollo/client";
-import LoadingSvg from "components/LoadingSvg";
-
-const getTodolist = gql`
-  query getTodolist {
-    todolist(order_by: { id: asc }) {
-      id
-      title
-      is_done
-    }
-  }
-`;
-
-const getTodoById = gql`
-  query getTodoById($id: Int!) {
-    todolist(where: { id: { _eq: $id } }) {
-      id
-      title
-      is_done
-    }
-  }
-`;
+import Todo from "components/Todo/Todo";
+import LoadingSvg from "components/LoadingSvg/LoadingSvg";
+import { useQuery, useLazyQuery } from "@apollo/client";
+import { GET_TODOLIST, GET_TODOLIST_BY_ID } from "graphql/Queries/TodoList";
 
 const TodoList = () => {
-  const { data, loading } = useQuery(getTodolist);
-  const [getTodo, { loading: loadingUpdate, data: dataUpdate }] =
-    useLazyQuery(getTodoById);
+  const { data, loading } = useQuery(GET_TODOLIST);
+
+  const [getTodo, { loading: loadingById, data: dataById }] =
+    useLazyQuery(GET_TODOLIST_BY_ID);
 
   const [list, setList] = useState([]);
+
   const [title, setTitle] = useState(1);
 
   const onChangeTitle = (e) => {
     const value = e.target.value;
-    if (!isNaN(value)) setTitle(value);
+
+    if (!isNaN(value)) {
+      setTitle(value);
+    }
   };
 
   const handleSearch = (e) => {
@@ -48,6 +34,7 @@ const TodoList = () => {
 
   const onSubmitList = (e) => {
     e.preventDefault();
+
     console.log("in progress");
   };
 
@@ -70,13 +57,13 @@ const TodoList = () => {
   }, [loading, data]);
 
   useEffect(() => {
-    if (!loadingUpdate && dataUpdate) {
-      setList([...dataUpdate.todolist]);
+    if (!loadingById && dataById) {
+      setList([...dataById.todolist]);
     }
-  }, [loadingUpdate, dataUpdate]);
+  }, [loadingById, dataById]);
 
   console.log("ini data", list);
-  console.log("ini dataUpdate", list);
+  console.log("ini dataById", list);
 
   return (
     <>
@@ -95,7 +82,7 @@ const TodoList = () => {
           </button>
         </div>
 
-        {loading || loadingUpdate ? (
+        {loading || loadingById ? (
           <LoadingSvg />
         ) : (
           <>
