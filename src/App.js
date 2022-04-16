@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import Todo from "./components/Todo/Todo";
 import LoadingSvg from "./components/LoadingSvg/LoadingSvg";
+// Apollo Client
 import { useQuery, useLazyQuery } from "@apollo/client";
+// Hasura GraphQL Queries
 import { GET_TODOLIST, GET_TODOLIST_BY_ID } from "./graphql/Queries/TodoList";
 
 const TodoList = () => {
